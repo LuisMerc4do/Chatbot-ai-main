@@ -1,6 +1,6 @@
-import { onGetBlogPosts } from '@/actions/landing'
-import NavBar from '@/components/navbar'
-import { Button } from '@/components/ui/button'
+import { onGetBlogPosts } from "@/actions/landing";
+import NavBar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,26 +8,26 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { pricingCards } from '@/constants/landing-page'
-import clsx from 'clsx'
-import { ArrowRightCircleIcon, Check } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import parse from 'html-react-parser'
-import { getMonthName } from '@/lib/utils'
+} from "@/components/ui/card";
+import { pricingCards } from "@/constants/landing-page";
+import clsx from "clsx";
+import { ArrowRightCircleIcon, Check } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import parse from "html-react-parser";
+import { getMonthName } from "@/lib/utils";
 
 export default async function Home() {
   const posts:
     | {
-        id: string
-        title: string
-        image: string
-        content: string
-        createdAt: Date
+        id: string;
+        title: string;
+        image: string;
+        content: string;
+        createdAt: Date;
       }[]
-    | undefined = await onGetBlogPosts()
-  console.log(posts)
+    | undefined = await onGetBlogPosts();
+  console.log(posts);
   return (
     <main>
       <NavBar />
@@ -70,8 +70,8 @@ export default async function Home() {
         {pricingCards.map((card) => (
           <Card
             key={card.title}
-            className={clsx('w-[300px] flex flex-col justify-between', {
-              'border-2 border-primary': card.title === 'Unlimited',
+            className={clsx("w-[300px] flex flex-col justify-between", {
+              "border-2 border-primary": card.title === "Unlimited",
             })}
           >
             <CardHeader>
@@ -89,17 +89,14 @@ export default async function Home() {
             <CardFooter className="flex flex-col items-start gap-4">
               <div>
                 {card.features.map((feature) => (
-                  <div
-                    key={feature}
-                    className="flex gap-2"
-                  >
+                  <div key={feature} className="flex gap-2">
                     <Check />
                     <p>{feature}</p>
                   </div>
                 ))}
               </div>
               <Link
-                href={`/dashbord?plan=${card.title}`}
+                href={`/dashboard?plan=${card.title}`}
                 className="bg-[#f3d299] border-orange border-2 p-2 w-full text-center font-bold rounded-md"
               >
                 Get Started
@@ -118,10 +115,7 @@ export default async function Home() {
       <section className="md:grid-cols-3 grid-cols-1 grid gap-5 container mt-8">
         {posts &&
           posts.map((post) => (
-            <Link
-              href={`/blogs/${post.id}`}
-              key={post.id}
-            >
+            <Link href={`/blogs/${post.id}`} key={post.id}>
               <Card className="flex flex-col gap-2 rounded-xl overflow-hidden h-full hover:bg-gray-100">
                 <div className="relative w-full aspect-video">
                   <Image
@@ -132,7 +126,7 @@ export default async function Home() {
                 </div>
                 <div className="py-5 px-10 flex flex-col gap-5">
                   <CardDescription>
-                    {getMonthName(post.createdAt.getMonth())}{' '}
+                    {getMonthName(post.createdAt.getMonth())}{" "}
                     {post.createdAt.getDate()} {post.createdAt.getFullYear()}
                   </CardDescription>
                   <CardTitle>{post.title}</CardTitle>
@@ -143,5 +137,5 @@ export default async function Home() {
           ))}
       </section>
     </main>
-  )
+  );
 }
