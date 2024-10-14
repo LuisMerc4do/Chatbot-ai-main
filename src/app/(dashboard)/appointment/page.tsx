@@ -6,50 +6,26 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@clerk/nextjs";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 type Props = {};
 
-const Page = (props: Props) => {
-  const [user, setUser] = useState<any>(null);
-  const [domainBookings, setDomainBookings] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+const Page = async (props: Props) => {
+  const user = await currentUser();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const userData = await currentUser();
-
-      if (!userData) return;
-      setUser(userData);
-
-      const bookings = await onGetAllBookingsForCurrentUser(userData.id);
-      setDomainBookings(bookings);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
-
+  if (!user) return null;
+  const domainBookings = await onGetAllBookingsForCurrentUser(user.id);
   const today = new Date();
 
-  if (loading) {
-    return (
-      <div className="w-full flex justify-center">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (!domainBookings) {
+  if (!domainBookings)
     return (
       <div className="w-full flex justify-center">
         <p>No Appointments</p>
       </div>
     );
-  }
 
   const bookingsExistToday = domainBookings.bookings.filter(
-    (booking) => new Date(booking.date).getDate() === today.getDate()
+    (booking) => booking.date.getDate() === today.getDate()
   );
 
   return (
@@ -79,11 +55,9 @@ const Page = (props: Props) => {
                       <p className="text-sm">
                         created
                         <br />
-                        {new Date(booking.createdAt).getHours()}{" "}
-                        {new Date(booking.createdAt).getMinutes()}{" "}
-                        {new Date(booking.createdAt).getHours() > 12
-                          ? "PM"
-                          : "AM"}
+                        {booking.createdAt.getHours()}{" "}
+                        {booking.createdAt.getMinutes()}{" "}
+                        {booking.createdAt.getHours() > 12 ? "PM" : "AM"}
                       </p>
                       <p className="text-sm">
                         Domain <br />
