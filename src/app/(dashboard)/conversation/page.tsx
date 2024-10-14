@@ -8,26 +8,21 @@ import React from "react";
 type Props = {};
 
 const ConversationPage = async (props: Props) => {
-  try {
-    //const domains = await onGetAllAccountDomains();
+  const domains = await onGetAllAccountDomains();
 
-    return (
-      <div className="w-full h-full flex">
-        {/*<ConversationMenu domains={domains?.domains} />*/}
+  return (
+    <div className="w-full h-full flex">
+      <ConversationMenu domains={domains?.domains} />
 
-        <Separator orientation="vertical" />
-        <div className="w-full flex flex-col">
-          <div className="px-5">
-            <InfoBar />
-          </div>
-          <Messenger />
+      <Separator orientation="vertical" />
+      <div className="w-full flex flex-col">
+        <div className="px-5">
+          <InfoBar />
         </div>
+        <Messenger />
       </div>
-    );
-  } catch (error) {
-    console.error("Error in conversation page:", error);
-    return <div>An error occurred. Please try again later.</div>;
-  }
+    </div>
+  );
 };
 
 export default ConversationPage;
