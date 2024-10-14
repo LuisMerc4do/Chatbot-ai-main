@@ -1,27 +1,33 @@
-import { onGetAllAccountDomains } from '@/actions/settings'
-import ConversationMenu from '@/components/conversations'
-import Messenger from '@/components/conversations/messenger'
-import InfoBar from '@/components/infobar'
-import { Separator } from '@/components/ui/separator'
-import React from 'react'
+import { onGetAllAccountDomains } from "@/actions/settings";
+import ConversationMenu from "@/components/conversations";
+import Messenger from "@/components/conversations/messenger";
+import InfoBar from "@/components/infobar";
+import { Separator } from "@/components/ui/separator";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const ConversationPage = async (props: Props) => {
-  const domains = await onGetAllAccountDomains()
-  return (
-    <div className="w-full h-full flex">
-      <ConversationMenu domains={domains?.domains} />
+  try {
+    const domains = await onGetAllAccountDomains();
 
-      <Separator orientation="vertical" />
-      <div className="w-full flex flex-col">
-        <div className="px-5">
-          <InfoBar />
+    return (
+      <div className="w-full h-full flex">
+        <ConversationMenu domains={domains?.domains} />
+
+        <Separator orientation="vertical" />
+        <div className="w-full flex flex-col">
+          <div className="px-5">
+            <InfoBar />
+          </div>
+          <Messenger />
         </div>
-        <Messenger />
       </div>
-    </div>
-  )
-}
+    );
+  } catch (error) {
+    console.error("Error in conversation page:", error);
+    return <div>An error occurred. Please try again later.</div>;
+  }
+};
 
-export default ConversationPage
+export default ConversationPage;
