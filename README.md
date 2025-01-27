@@ -1,1 +1,1 @@
-Chatbot created with nextjs and migrating to .NET
+Chatbot created with Next.js, React.js and migrating to .NET 
